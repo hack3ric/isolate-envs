@@ -29,11 +29,10 @@ ENV USER_GID=$USER_UID
 
 # Create the user group and user with the required IDs
 RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd -m -d /home/$USERNAME -s /bin/bash --uid $USER_UID --gid $USER_GID -G sudo $USERNAME
+    && useradd -l -m -d /home/$USERNAME -s /bin/bash --uid $USER_UID --gid $USER_GID -G sudo $USERNAME
 
 # Allow passwordless sudo for the user
 RUN echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-
 
 # Copy and set permissions for the entrypoint script
 # Set USERNAME as an environment variable so the entrypoint script can access it at runtime
