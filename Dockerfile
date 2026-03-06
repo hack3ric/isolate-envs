@@ -28,10 +28,14 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 
-# Apply SSH and PAM fixes for Docker and large UIDs
-RUN sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd \
-    && sed -i 's/^session\s*optional\s*pam_lastlog.so/#session optional pam_lastlog.so/g' /etc/pam.d/sshd \
-    && echo "PrintLastLog no" >> /etc/ssh/sshd_config
+# Fix 1: Make pam_loginuid optional
+RUN sed -i 's/^.*pam_loginuid.so.*/session optional pam_loginuid.so/g' /etc/pam.d/sshd
+
+# Fix 2: Broadly disable pam_lastlog.so everywhere
+RUN sed -i '/pam_lastlog.so/ s/^/#/' /etc/pam.d/sshd /etc/pam.d/login
+
+# Fix 3: Disable SSH native lastlog printing
+RUN echo "PrintLastLog no" >> /etc/ssh/sshd_config
 
 # Delete default SSH host keys generated during apt-get install
 # This forces the entrypoint script to generate unique keys per container
