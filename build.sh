@@ -7,7 +7,7 @@ ubuntu_version=$2
 [ -z "$cuda_version" ] && cuda_version=13.1.1
 [ -z "$ubuntu_version" ] && ubuntu_version=22.04
 
-tag=isolate-envs_cuda-"$cuda_version"-ubuntu-"$ubuntu_version"
+tag=isolate-envs_cuda-"$cuda_version"_ubuntu-"$ubuntu_version"
 
 docker build ./image \
   --build-arg CUDA_VERSION="$cuda_version" \
