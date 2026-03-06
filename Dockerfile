@@ -1,8 +1,9 @@
 ARG CUDA_VERSION=13.1.1
 ARG UBUNTU_VERSION=22.04
-ARG USERNAME=student
 
 FROM nvidia/cuda:$CUDA_VERSION-devel-ubuntu$UBUNTU_VERSION
+
+ARG USERNAME=student
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
